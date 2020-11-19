@@ -1,0 +1,122 @@
+<html>
+
+<head>
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../default.css">
+</head>
+
+<body>
+    <div class="topnav">
+        <a href="../index.html">👀 about</a>
+        <a class="active" href="index.html">🖋️ blog</a>
+        <a href="https://twitter.com/VZ96Daniel" target="blank">🐦 twitter</a>
+        <a href="https://github.com/DanielVZ96" target="blank">🐙/🐈 github</a>
+    </div>
+    <div class="posts">
+        <h1>
+             I tried to make the fastest sorting algorithm I could think of... in rust (Part 1)
+        </h1>
+        <h2>
+            The story behind my latest project <a class="link2" href="https://github.com/DanielVZ96/spacesort">(s p a c e s o r t)</a>
+        </h2>
+        <div class="post">
+        <figure>
+            <img class="figure-img" src="../static/hubble-750x750.png">
+            <figcaption class="figure-cap">Gravitational lensing captured by the hubble telescope. <a class="link1" href="https://www.nasa.gov/feature/goddard/2019/hubble-captures-a-dozen-galaxy-doppelgangers"> Source...</a></figcaption>
+        </figure>
+            <p>
+            As usual, it all started with a showerthought. "What's the <i>fastest</i> sorting algorithm I can come up with?".
+            Being someone who didn't study software engineering formally, I'm pretty ignorant about data structures
+            and algorithms. I've only read one book about it and I have to admit I read it as fast as posible.
+            But I'm also someone who spends a lot of time in his head, a day-dreamer if you will. My day dreaming
+            specializes in thinking about stuff I don't know jack about. And for that sole reason I've been 
+            day dreaming about sorting algorithms for quite some months now. So it was only a matter of time 
+            I would challenge myself like that in the shower. Why not? It would be fun to come up with something
+            and then compare it to "real" sorting algorithms.
+            </p>
+            <p>
+            There was one more reason behind this challenge. I'm currently learning rust. At the time of writing, I'm at chapter 16 of the <a href="https://doc.rust-lang.org/book/">rust book</a>. I wanted to establish what
+            I had learned by doing some crazy project. Plus, coming from python, the whole idea of memory management
+            was pretty alien for me. Despite this I found the ownership system pretty intuitive compared with what
+            I had to face when I learned C (multiple memory allocation methods and pitfalls). So I also wanted
+            to try the whole memory management stuff in a real life problem. And that's when the idea struck me:
+            my sorting algorithm will leverage memory (<i>s p a c e</i>) in order to sort faster. 
+            </p>
+            <p>
+            Almost all the sorting algorithms I remember sorted using comparisons. I knew there were other methods
+            like radix sort but I didn't understand it and the name sounded pretty complex to me. So during that
+            shower I came up with the fastest solution I could think of that avoids comparisons:
+            </p>
+            <pre><code>
+// My first attempt at sorting.
+pub fn sort_v1(v: Vec<usize>) -> Vec&lt;usize&gt; {
+    let sum: usize = v.iter().sum();
+    // Create an index vector filled with None with the length of the sum of the values.
+    let mut index: Vec&lt;Option &lt;usize&gt;&gt; = vec![None; sum];
+
+    // Iter the input vector and put each number in it's index of the index vector.
+    for i in v.iter() {
+        index[*i as usize] = Some(*i);
+    }
+    index
+        .iter()
+        .filter(|x| x.is_some())  // Filter out None values 
+        .map(|x| x.unwrap())      // Extract values from Option
+        .collect()
+}
+            </code>
+            </pre>
+            <p> 
+            Well... that looked a lot better in my head. This method is pretty slow. Very slow. Unnecesarily
+            slow. Still, it was something and it was mine. My train of thought was "numbers already <i>encode</i>
+            where they belong". Therefore if we allocate a vector with sufficient
+            size (for some reason I thought I needed the SUM of the values), we'll just have to put each value
+            where it belongs and get rid of all of the space in between. Then, by not caring about space complexity
+            my algorithm would have better time complexity. This is similar to another algorithm:
+            <a href="https://en.wikipedia.org/wiki/Counting_sort" class="link1">counting sort</a>, but at the
+            time I didn't even remember reading about it.
+            </p>
+            <p> 
+            So... regarding what's wrong with this algorithm. Let's fix it. The most obvious fix is to replace the
+            <code>.iter().sum()</code> to just <code>.max()</code>. I don't know why I thought I needed the
+            sum of the vector, but it's pretty obvious that, if I'm indexing by the values contained in the 
+            vector, the length of the <code>index</code> vector will be the maximum value in the input vector.
+            Second, it seems unnecesary to save the value in the index vector if we already encode the value
+            in it's index. It makes a more sense to replace the <code>Option</code> with a <code>bool</code>,
+            as we only need to encode the presence of a value in a certain index. The result is the following function:
+            </p>
+            <pre>
+            <code>
+// Second attempt at fast sorting
+pub fn sort_v2(v: Vec&lt;usize&gt;) -&lt; Vec<usize> {
+    let max = v.iter().max().unwrap();
+
+    // Create the index vector with `max` length
+    let mut index: Vec&lt;bool&gt; = vec![false; max + 1];
+
+    for i in v.iter() {
+        index[*i] = true;
+    }
+
+    return index
+        .into_iter()
+        .enumerate()
+        .filter(|(_, x)| *x)  // Filter out false values
+        .map(|(i, _)| i)      // Collect index values
+        .collect();
+}
+
+            </code>
+            </pre>
+            <p>
+            This version is better and faster. It's faster than all algorithms I benchmarked against it. It'll
+            probably be slower at lists with a very high `max` value, but in general it is the fastest algorithm
+            I tested. But this is for a reason. This algorithm is cheating. It doesn't support duplicate values.
+            If there's any duplicate, it will just index it as `true` again.
+            </p>
+        </div>
+    </div>
+</body>
+
+</html>

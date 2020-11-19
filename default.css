@@ -1,0 +1,162 @@
+/* Colors Used:
+ * BG: #f5f9ff
+ * BG2: #c6c9ce
+ * Text: #000000
+ * Higlight: #ff0000
+ * Higlight2: #00ff00
+ * Higlight3: #00fffff
+ * Underlines: #ff00ff
+ * Underlines2: #ffff00
+ * Links: #00ff00
+ */
+
+body {
+  background-color: black;
+  font-family: 'Montserrat', sans-serif;
+}
+
+/* Add a black background color to the top navigation */
+.topnav {
+  background-color: #000;
+  overflow: hidden;
+  border-color: cyan;
+  border-width: 2px;
+  border-block-style: double;
+  margin: auto;
+  width: 50%;
+}
+
+/* Style the links inside the navigation bar */
+.topnav a {
+  float: left;
+  color: #00ff00;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+  font-size: 17px;
+}
+
+/* Change the color of links on hover */
+.topnav a:hover {
+  background-color: #00ff00;
+  color: black;
+}
+
+/* Add a color to the active/current link */
+.topnav a.active {
+  background-color: black;
+  color: #00ffff;
+  border-radius-left: 5px;
+  text-decoration: underline;
+}
+
+.topnav a.active:hover {
+  background-color: #00ffff;
+  color: black;
+  border-radius-left: 5px;
+}
+.content {
+  border-radius: 15px;
+  padding: 3em;
+  margin: 3em;
+  background-color: #f5f9ff;
+  width: 70%;
+  margin: auto;
+  margin-top: 2em;
+  color: black;
+}
+
+footer {
+  text-align: center;
+  color: white;
+  bottom: 5px;
+  width: 100%;
+}
+
+.posts {
+  color: white;
+  width: 50%;
+  margin: auto;
+}
+
+.underline1 {
+ text-decoration: underline;
+ text-underline-offset: 5px;
+ text-decoration-thickness: 0.25em;
+ text-decoration-color: #ff00ff;
+}
+
+.underline2 {
+ text-decoration: underline;
+ text-underline-offset: 5px;
+ text-decoration-thickness: 0.25em;
+ text-decoration-color: #ffff00;
+}
+a.link1:link {
+  color: blue; 
+}
+
+a.link1:visited {
+  color: blue; 
+}
+
+a.link1:hover {
+  text-decoration: none;
+}
+
+a.link2:link {
+  color: cyan; 
+}
+
+a.link2:visited {
+  color: cyan; 
+}
+
+a.link2:hover {
+  text-decoration: none;
+}
+
+.post {
+  border-radius: 15px;
+  padding: 1em;
+  margin: 1em;
+  background-color: #f5f9ff;
+  width: 90%;
+  margin: auto;
+  margin-top: 2em;
+  color: black;
+  line-height: 2;
+}
+
+.circle-img {
+  border-radius: 50%;
+  border: 5px solid #f00;
+  margin: auto;
+  margin-top: 5px;
+  display: block;
+}
+
+.figure-img {
+  display: block;
+  margin: auto;
+  height: 50%;
+  border-radius: 5%;
+}
+
+.figure-cap {
+    margin: auto;
+    margin-top: 2px;
+    text-align: center;
+}
+
+pre{
+  font-family: Consolas, Menlo, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New, monospace, serif;
+  margin-bottom: 10px;
+  overflow: auto;
+  width: auto;
+  padding: 5px;
+  background-color: #eee;
+  width: 650px!ie7;
+  padding-bottom: 20px!ie7;
+  max-height: 600px;
+}
