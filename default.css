@@ -76,7 +76,7 @@ footer {
 .posts {
   color: white;
   width: 90%;
-  margin: auto;
+  margin: 0 auto;
   max-width: 1080px;
 }
 
@@ -140,7 +140,8 @@ a.link2:hover {
 .figure-img {
   display: block;
   margin: auto;
-  height: 50%;
+  width: 100%;
+  max-width: 750px;
   border-radius: 5%;
 }
 
