@@ -235,9 +235,9 @@ return output
             lists radix is faster and in the smaller ones quickersort is faster (which, from what I read on <a href="https://docs.rs/crate/quickersort/3.0.1">their create</a>
             uses a mixture of insertion sort, dual pivot quicksort and heapsort). So using the same magic fitting method we used with my own
             algorithm we get to the following super formula: <code>y = 5000</code>. We need no magic formulas.
-            Both radix and quickersort scale only with size, so judging by what the graphs show, we'll set that for
+            Judging by what the graphs show, the length at which radix starts being faster is always 5000. We'll set that for
             cases in which my sorting algorithm is too slow and lengths lower than 5k elements, we'll use quickersort... for now :)
-            And we finally have the fastest algorithm I could come up with!
+            And we finally have the fastest algorithm I could come up with! (WIP, # TODO write algorithm)
             </p>
         </div>
     </div>
