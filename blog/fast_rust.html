@@ -8,45 +8,59 @@
 
 <body>
     <div class="topnav">
-        <a href="../index.html"><h2>👀 about</h2></a>
-        <a class="active" href="index.html"><h2>🖋️blog</h2></a>
-        <a href="https://twitter.com/VZ96Daniel" target="blank"><h2>🐦 twitter</h2></a>
-        <a href="https://github.com/DanielVZ96" target="blank"><h2>🐙/🐈 github</h2></a>
+        <a href="../index.html">
+            <h2>👀 about</h2>
+        </a>
+        <a class="active" href="index.html">
+            <h2>🖋️blog</h2>
+        </a>
+        <a href="https://twitter.com/VZ96Daniel" target="blank">
+            <h2>🐦 twitter</h2>
+        </a>
+        <a href="https://github.com/DanielVZ96" target="blank">
+            <h2>🐙/🐈 github</h2>
+        </a>
     </div>
     <div class="posts">
         <h1>
-             I tried to make the fastest sorting algorithm I could think of... in rust (Part 1)
+            I tried to make the fastest sorting algorithm I could think of... in rust (Part 1)
         </h1>
         <h2>
-            The story behind my latest project <a class="link2" href="https://github.com/DanielVZ96/spacesort">(s p a c e s o r t)</a>
+            The story behind my latest project <a class="link2" href="https://github.com/DanielVZ96/spacesort">(s p a c
+                e s o r t)</a>
         </h2>
         <div class="post">
-        <figure>
-            <img class="figure-img" src="../static/hubble-750x750.png">
-            <figcaption class="figure-cap">Gravitational lensing captured by the hubble telescope. <a class="link1" href="https://www.nasa.gov/feature/goddard/2019/hubble-captures-a-dozen-galaxy-doppelgangers"> Source...</a></figcaption>
-        </figure>
+            <figure>
+                <img class="figure-img" src="../static/hubble-750x750.png">
+                <figcaption class="figure-cap">Gravitational lensing captured by the hubble telescope. <a class="link1"
+                        href="https://www.nasa.gov/feature/goddard/2019/hubble-captures-a-dozen-galaxy-doppelgangers">
+                        Source...</a></figcaption>
+            </figure>
             <p>
-            As usual, it all started with a showerthought. "What's the <i>fastest</i> sorting algorithm I can come up with?".
-            Being someone who didn't study software engineering formally, I'm pretty ignorant about data structures
-            and algorithms. I've only read one book about it and I have to admit I read it as fast as posible.
-            But I'm also someone who spends a lot of time in his head, a day-dreamer if you will. My day dreaming
-            specializes in thinking about stuff I don't know jack about. And for that sole reason I've been 
-            day dreaming about sorting algorithms for quite some months now. So it was only a matter of time 
-            I would challenge myself like that in the shower. Why not? It would be fun to come up with something
-            and then compare it to "real" sorting algorithms.
+                As usual, it all started with a showerthought. "What's the <i>fastest</i> sorting algorithm I can come
+                up with?".
+                Being someone who didn't study software engineering formally, I'm pretty ignorant about data structures
+                and algorithms. I've only read one book about it and I have to admit I read it as fast as posible.
+                But I'm also someone who spends a lot of time in his head, a day-dreamer if you will. My day dreaming
+                specializes in thinking about stuff I don't know jack about. And for that sole reason I've been
+                day dreaming about sorting algorithms for quite some months now. So it was only a matter of time
+                I would challenge myself like that in the shower. Why not? It would be fun to come up with something
+                and then compare it to "real" sorting algorithms.
             </p>
             <p>
-            There was one more reason behind this challenge. I'm currently learning rust. At the time of writing, I'm at chapter 16 of the <a href="https://doc.rust-lang.org/book/">rust book</a>. I wanted to establish what
-            I had learned by doing some crazy project. Plus, coming from python, the whole idea of memory management
-            was pretty alien for me. Despite this I found the ownership system pretty intuitive compared with what
-            I had to face when I learned C (multiple memory allocation methods and pitfalls). So I also wanted
-            to try the whole memory management stuff in a real life problem. And that's when the idea struck me:
-            my sorting algorithm will leverage memory (<i>s p a c e</i>) in order to sort faster. 
+                There was one more reason behind this challenge. I'm currently learning rust. At the time of writing,
+                I'm at chapter 16 of the <a href="https://doc.rust-lang.org/book/">rust book</a>. I wanted to establish
+                what
+                I had learned by doing some crazy project. Plus, coming from python, the whole idea of memory management
+                was pretty alien for me. Despite this I found the ownership system pretty intuitive compared with what
+                I had to face when I learned C (multiple memory allocation methods and pitfalls). So I also wanted
+                to try the whole memory management stuff in a real life problem. And that's when the idea struck me:
+                my sorting algorithm will leverage memory (<i>s p a c e</i>) in order to sort faster.
             </p>
             <p>
-            Almost all the sorting algorithms I remember sorted using comparisons. I knew there were other methods
-            like radix sort but I didn't understand it and the name sounded pretty complex to me. So during that
-            shower I came up with the fastest solution I could think of that avoids comparisons:
+                Almost all the sorting algorithms I remember sorted using comparisons. I knew there were other methods
+                like radix sort but I didn't understand it and the name sounded pretty complex to me. So during that
+                shower I came up with the fastest solution I could think of that avoids comparisons:
             </p>
             <pre><code>
 // My first attempt at sorting.
@@ -67,24 +81,30 @@ pub fn sort_v1(v: Vec<usize>) -> Vec&lt;usize&gt; {
 }
             </code>
             </pre>
-            <p> 
-            Well... that looked a lot better in my head. This method is pretty slow. Very slow. Unnecesarily
-            slow. Still, it was something and it was mine. My train of thought was "numbers already <i>encode</i>
-            where they belong". Therefore if we allocate a vector with sufficient
-            size (for some reason I thought I needed the SUM of the values), we'll just have to put each value
-            where it belongs and get rid of all of the space in between. Then, by not caring about space complexity
-            my algorithm would have better time complexity. This is similar to another algorithm:
-            <a href="https://en.wikipedia.org/wiki/Counting_sort" class="link1">counting sort</a>, but at the
-            time I didn't even remember reading about it.
+            <figure>
+                <img class="figure-img" src="../static/benchmarks/sort_v1_small_range.svg">
+                <figcaption class="figure-cap">First try at sorting benchmark. Note that I could only go up to 100 elements; my
+                    algorithm was too slow to benchmark it in a reasonable time.</figcaption>
+            </figure>
+            <p>
+                Well... that looked a lot better in my head. This method is pretty slow. Very slow. Unnecesarily
+                slow. Still, it was something and it was mine. My train of thought was "numbers already <i>encode</i>
+                where they belong". Therefore if we allocate a vector with sufficient
+                size (for some reason I thought I needed the SUM of the values), we'll just have to put each value
+                where it belongs and get rid of all of the space in between. Then, by not caring about space complexity
+                my algorithm would have better time complexity. This is similar to another algorithm:
+                <a href="https://en.wikipedia.org/wiki/Counting_sort" class="link1">counting sort</a>, but at the
+                time I didn't even remember reading about it.
             </p>
-            <p> 
-            So... regarding what's wrong with this algorithm. Let's fix it. The most obvious fix is to replace the
-            <code>.iter().sum()</code> to just <code>.max()</code>. I don't know why I thought I needed the
-            sum of the vector, but it's pretty obvious that, if I'm indexing by the values contained in the 
-            vector, the length of the <code>index</code> vector will be the maximum value in the input vector.
-            Second, it seems unnecesary to save the value in the index vector if we already encode the value
-            in it's index. It makes a more sense to replace the <code>Option</code> with a <code>bool</code>,
-            as we only need to encode the presence of a value in a certain index. The result is the following function:
+            <p>
+                So... regarding what's wrong with this algorithm. Let's fix it. The most obvious fix is to replace the
+                <code>.iter().sum()</code> to just <code>.max()</code>. I don't know why I thought I needed the
+                sum of the vector, but it's pretty obvious that, if I'm indexing by the values contained in the
+                vector, the length of the <code>index</code> vector will be the maximum value in the input vector.
+                Second, it seems unnecesary to save the value in the index vector if we already encode the value
+                in it's index. It makes a more sense to replace the <code>Option</code> with a <code>bool</code>,
+                as we only need to encode the presence of a value in a certain index. The result is the following
+                function:
             </p>
             <pre>
             <code>
@@ -109,11 +129,115 @@ pub fn sort_v2(v: Vec&lt;usize&gt;) -&lt; Vec<usize> {
 
             </code>
             </pre>
+            <figure>
+                <img class="figure-img" src="../static/benchmarks/sort_v2_small_range.svg">
+                <figcaption class="figure-cap">My second attempt at sorting. Pretty fast for small ranges of values (between 0 and 1.000). Please note that the scale
+                is logarithmic in both scales in order to be able to see both small and big differences of speed.</figcaption>
+            </figure>
             <p>
-            This version is better and faster. It's faster than all algorithms I benchmarked against it. It'll
-            probably be slower at lists with a very high `max` value, but in general it is the fastest algorithm
-            I tested. But this is for a reason. This algorithm is cheating. It doesn't support duplicate values.
-            If there's any duplicate, it will just index it as `true` again.
+                This version is better and faster. It's faster than all algorithms I benchmarked against it in lists consisting in a small range of values
+                and bigger than about 100 elements. But there are two caveats here. First, he complexity of the algorithm is <code>O(n + max)</code>. It
+                heavily depends on how big is the max value:
+            </p>
+            <figure>
+                <img class="figure-img" src="../static/benchmarks/sort_v2_med_range.svg">
+                <figcaption class="figure-cap">My second attempt at sorting. Sometimes fast for medium ranges of values (between 0 and 1.000.000).</figcaption>
+            </figure>
+            <figure>
+                <img class="figure-img" src="../static/benchmarks/sort_v2_max_range.svg">
+                <figcaption class="figure-cap">My second attempt at sorting. Slow for large ranges of values (between 0 and 100.000.000).</figcaption>
+            </figure>
+            <p>
+                I'm fully aware that "small", "medium", and "large" are kinda subjective here. I'd prefer to benchmark continuosly in both dimensions and plot a heatmap,
+                but I haven't had the time to leave my computer running these simulations for so long. Still, the intuition of how this algorithm scales is clear. For
+                very large vectors, the only limit is the ammount of ram available.
+            </p>
+            <p>
+                The second and bigger caveat of this algorithm is that it doesn't keep duplicates, it overwrites <code>true</code> one on top of the other in the
+                <code>index</code> vector. So let's try to make a "fair" version of this algorithm: 
+            </p>
+            <pre>
+            <code>
+pub fn sort_v2_fair(v: Vec&lt;usize&gt;) -&gt; Vec&lt;usize&gt; {
+    let min: usize = *v.iter().min().unwrap();
+    // Use max - min to shift all values to zero
+    // hopefully reducing the index length
+    let max: usize = v.iter().max().unwrap() - min;
+    let mut index: Vec&lt;usize&gt; = vec![0; max + 1];
+
+    // Count how many duplicates are in a given index
+    for i in v.iter() {
+        index[i - min] += 1;
+    }
+    return index
+        .iter()
+        .filter(|x| **x != 0)  // Filter zeroes
+        .enumerate()
+        .map(|(i, c)| vec![i + min; *c])  // Build vectors of duplicates
+        .flatten()
+        .collect();
+}
+            </code>
+            </pre>
+            <figure>
+                <img class="figure-img small" src="../static/benchmarks/sort_v2_fair_max_range.svg">
+                <img class="figure-img small" src="../static/benchmarks/sort_v2_fair_med_range.svg">
+                <img class="figure-img small" src="../static/benchmarks/sort_v2_fair_small_range.svg">
+                <figcaption class="figure-cap">My fair attempt at sorting.</figcaption>
+            </figure>
+            <p>
+            Now it's fast for sizes larger than 1k in small ranges. In medium and large ranges
+            it's only fast for sizes larger than 10 million while ram lasts. It's a lot worse than I
+            think it should be but I still have some tricks up my sleve. First, we can check if there's
+            a duplicate in order to determine if we can use the unfair version of the algorithm, which we'll
+            call "setsort" for now, because the word "unfair" is a bit mean &gt;:( So given the length and
+            range of values of a list we can estimate if and how probable it is for it to be a set and then
+            get to a probability for which it is acceptable to check for duplicates and use setsort.
+            </p>
+            <p>
+            Second, I'm going to break my rule of only using what I can come up with and peak behind other
+            non-comparative sorting algorithms. I'm ready to compare what I can come up with the "real" algos.
+            The one that got my attention was counting sort because it is fast and is somewhat similar to what
+            I'm doing here. My key takeaway from it is instead of building vectors of repeated values, we just store
+            all values in the result array and increment the indexing key we use each time we add a new value.
+            Here's some pseudocode of it I <a href="https://en.wikipedia.org/wiki/Counting_sort#The_algorithm">found in wikipedia</a>:
+            </p>
+            <pre>
+            <code>
+count = array of k+1 zeros
+for x in input do
+    count[key(x)] += 1
+
+total = 0
+for i in 0, 1, ... k do
+    count[i], total = total, count[i] + total
+
+output = array of the same length as input
+for x in input do
+    output[count[key(x)]] = x
+    count[key(x)] += 1 
+
+return output
+            </code>
+            </pre>
+            <p>
+            Finally the last trick I'll use is using other algorithms depending on the length and range of values
+            in a list. This goes against the whole "coming up with it by myself" idea, but at this point I just want
+            to go fast. Plus, technically I'm still coming up with these "ideas" and bringing parts of my original
+            attempt to the equation. So, given that at the "small" range the fair algorithm is faster from around 1k
+            elements, 5 million at the "med" range, and probably 1 billion at the "max" range (discarding radix sort),
+            and by fitting a quadratic curve at <a href="https://www.wolframalpha.com/input/?i=quadratic+fit+%7B%7B1000%2C+1000%7D%2C+%7B10000000%2C+5000000%7D%2C+%7B1000000000%2C+1000000000%7D%7D">wolframalpha</a>,
+            we get that the equation that determines wether my algorithm will be faster is roughly <code>y = ((5 * 10^-10)x^2) + (x/2) + 500</code>,
+            where <code>x</code> is the range of values and <code>y</code> is the length of the list. Therefore, for a given range if the length
+            of the list is less than <code>y</code>, I should use another algorithm.
+            </p>
+            <p> Which other algorithm? From the plots we can see that in larger
+            lists radix is faster and in the smaller ones quickersort is faster (which, from what I read on <a href="https://docs.rs/crate/quickersort/3.0.1">their create</a>
+            uses a mixture of insertion sort, dual pivot quicksort and heapsort). So using the same magic fitting method we used with my own
+            algorithm we get to the following super formula: <code>y = 5000</code>. We need no magic formulas.
+            Both radix and quickersort scale only with size, so judging by what the graphs show, we'll set that for
+            cases in which my sorting algorithm is too slow and lengths lower than 5k elements, we'll use quickersort... for now :)
+            And we finally have the fastest algorithm I could come up with!
             </p>
         </div>
     </div>

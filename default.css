@@ -15,6 +15,18 @@ body {
   font-family: 'Montserrat', sans-serif;
 }
 
+a:link {
+  color: blue; 
+}
+
+a:visited {
+  color: blue; 
+}
+
+a:hover {
+  text-decoration: none;
+}
+
 /* Add a black background color to the top navigation */
 .topnav {
   background-color: #000;
@@ -92,17 +104,6 @@ footer {
  text-decoration-thickness: 0.25em;
  text-decoration-color: #ffff00;
 }
-a.link1:link {
-  color: blue; 
-}
-
-a.link1:visited {
-  color: blue; 
-}
-
-a.link1:hover {
-  text-decoration: none;
-}
 
 a.link2:link {
   color: cyan; 
@@ -142,6 +143,11 @@ a.link2:hover {
   width: 100%;
   max-width: 750px;
   border-radius: 5%;
+}
+
+.figure-img.small {
+  width: 50%;
+  float: left;
 }
 
 .figure-cap {
