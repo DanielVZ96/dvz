@@ -102,7 +102,7 @@ pub fn sort_v1(v: Vec<usize>) -> Vec&lt;usize&gt; {
                 sum of the vector, but it's pretty obvious that, if I'm indexing by the values contained in the
                 vector, the length of the <code>index</code> vector will be the maximum value in the input vector.
                 Second, it seems unnecesary to save the value in the index vector if we already encode the value
-                in it's index. It makes a more sense to replace the <code>Option</code> with a <code>bool</code>,
+                in its index. It makes a more sense to replace the <code>Option</code> with a <code>bool</code>,
                 as we only need to encode the presence of a value in a certain index. The result is the following
                 function:
             </p>
@@ -227,7 +227,7 @@ return output
             attempt to the equation. So, given that at the "small" range the fair algorithm is faster from around 1k
             elements, 5 million at the "med" range, and probably 1 billion at the "max" range (discarding radix sort),
             and by fitting a quadratic curve at <a href="https://www.wolframalpha.com/input/?i=quadratic+fit+%7B%7B1000%2C+1000%7D%2C+%7B4000000%2C+10000000%7D%2C+%7B10000000%2C+100000000%7D%7D">wolframalpha</a>,
-            we get that the equation that determines wether my algorithm will be faster is roughly <code>y = (1.25 * 10⁻⁶)x² - 2.5x + 3500</code>,
+            we get that the equation that determines whether my algorithm will be faster is roughly <code>y = (1.25 * 10⁻⁶)x² - 2.5x + 3500</code>,
             where <code>x</code> is the length of the list and <code>y</code> is the range of values in it. Therefore, for a given list length, if the range
             of the list is more than <code>y</code>, I should use another algorithm.
             </p>
@@ -255,7 +255,7 @@ fn should_use_space(len: f64, range: f64) -&gt; bool {
     return range &lt; ((1.25009 * f64::from(10).powi(-6)) * len.powi(2)) - 2.50112 * len + 3499.97;
 }
 
-    pub fn space_sort&lt;T: SpaceSortable&gt;(v: Vec&lt;T&gt;) -&gt; Vec&lt;T&gt; {
+pub fn space_sort&lt;T: SpaceSortable&gt;(v: Vec&lt;T&gt;) -&gt; Vec&lt;T&gt; {
     let len = v.len();
     if len &lt; 150 {
         let mut r: Vec&lt;T&gt; = v.clone();
@@ -273,6 +273,7 @@ fn should_use_space(len: f64, range: f64) -&gt; bool {
             is_set = !has_dup(\&v);
         }
 
+        # TODO support less than 0 for space_sort_set
         if is_set {
             return space_sort_set(v, range);
         }
