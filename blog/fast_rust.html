@@ -226,8 +226,8 @@ return output
             to go fast. Plus, technically I'm still coming up with these "ideas" and bringing parts of my original
             attempt to the equation. So, given that at the "small" range the fair algorithm is faster from around 1k
             elements, 5 million at the "med" range, and probably 1 billion at the "max" range (discarding radix sort),
-            and by fitting a quadratic curve at <a href="https://www.wolframalpha.com/input/?i=quadratic+fit+%7B%7B1000%2C+1000%7D%2C+%7B4000000%2C+10000000%7D%2C+%7B10000000%2C+100000000%7D%7D">wolframalpha</a>,
-            we get that the equation that determines whether my algorithm will be faster is roughly <code>y = (1.25 * 10⁻⁶)x² - 2.5x + 3500</code>,
+            and by fitting a quadratic curve at <a href="https://www.wolframalpha.com/input/?i=quadratic+fit+%7B%7B150%2C+1000%7D%2C+%7B1000%2C+10000%7D%2C+%7B1000000%2C+10000000%7D%2C+%7B4000000%2C+50000000%7D%7D">wolframalpha</a>,
+            we get that the equation that determines whether my algorithm will be faster is roughly <code>y = (8.3339 * 10⁻⁷)x² - 9.16638x + 228.583</code>,
             where <code>x</code> is the length of the list and <code>y</code> is the range of values in it. Therefore, for a given list length, if the range
             of the list is more than <code>y</code>, I should use another algorithm.
             </p>
@@ -241,39 +241,28 @@ return output
             </p>
             <pre>
                 <code>
-pub trait SpaceSortable:
-    RdxSortTemplate + ToPrimitive + FromPrimitive + Ord + PartialOrd + Clone + Copy + Hash
-{
-}
-
-impl&lt;T&gt; SpaceSortable for T where
-    T: RdxSortTemplate + ToPrimitive + FromPrimitive + Ord + PartialOrd + Clone + Copy + Hash
-{
-}
-
 fn should_use_space(len: f64, range: f64) -&gt; bool {
-    return range &lt; ((1.25009 * f64::from(10).powi(-6)) * len.powi(2)) - 2.50112 * len + 3499.97;
+    return range &gt;= ((8.3339 * f64::from(10).powi(-7)) * len.powi(2)) - 9.16638 * len + 228.583;
 }
 
 pub fn space_sort&lt;T: SpaceSortable&gt;(v: Vec&lt;T&gt;) -&gt; Vec&lt;T&gt; {
     let len = v.len();
-    if len &lt; 150 {
+    if len &lt; 200 {
         let mut r: Vec&lt;T&gt; = v.clone();
-        quickersort::sort(\&mut r);
+        quickersort::sort(&amp;mut r);
         return r;
     }
 
     let max = v.iter().max().unwrap().to_i64().unwrap();
     let min = v.iter().min().unwrap().to_i64().unwrap();
     let range = max - min;
-    let settability_index = 1 - (max / len as i64);
+    let settability_index = 1 - (range / len as i64);
     let mut is_set = false;
     if should_use_space(len as f64, range as f64) {
         if settability_index &gt; MIN_HAS_DUP_SETTABILITY {
-            is_set = !has_dup(\&v);
+            is_set = !has_dup(&v);
         }
 
-        # TODO support less than 0 for space_sort_set
         if is_set {
             return space_sort_set(v, range);
         }
@@ -285,7 +274,7 @@ pub fn space_sort&lt;T: SpaceSortable&gt;(v: Vec&lt;T&gt;) -&gt; Vec&lt;T&gt; {
     }
     if len &lt; 5000 {
         let mut r: Vec&lt;T&gt; = v.clone();
-        quickersort::sort(\&mut r);
+        quickersort::sort(&mut r);
         return r;
     } else {
         let mut r: Vec&lt;T&gt; = v.clone();
@@ -296,12 +285,13 @@ pub fn space_sort&lt;T: SpaceSortable&gt;(v: Vec&lt;T&gt;) -&gt; Vec&lt;T&gt; {
                 </code>
             </pre>
             <p>
-            So this is finally the fastest sorting algorithm I could come up with. There is still some further work
+            So this is THE fastest sorting algorithm I could come up with. There is still some further work
             I'd like to do, like testing a custom data structure for retrying the idea of reducing space between lists.
-            I've already implemented the ability of sorting by a custom function that returns a "SpaceSortable". But as time
+            Plus, I should run a more continuous benchmark to better fit the decision courve, as it isn't working as expected in further benchmarks.
+            I've already implemented the ability of sorting by a custom function that returns a "SpaceSortable", but I think that implementation can be further optimized. But as time
             is a finite resource, I prefer to postpone all further work on this until I finish reading the rust book. For now,
             I'll just leave my current ideas in the repo's readme. This is a learning project of mine, so I'd be grateful for any
-            suggestion and correction you may have about it. You can <a class="link2" href="https://github.com/DanielVZ96/spacesort">(s p a c
+            suggestion and correction you may have about it. You can <a class="link1" href="https://github.com/DanielVZ96/spacesort">
             open an issue at the repo</a>, hit me up on twitter, or just send
             me an email.
             </p>
